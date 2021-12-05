@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:background="@color/color5"
+        tools:context=".ui.status.StatusFragment">
+
+        <com.jem.fliptabs.FlipTab
+            android:id="@+id/flipTab"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:borderWidth="4dp"
+            app:flipAnimationDuration="400"
+            app:highlightColor="#FF0000"
+            app:leftTabText="Confirm Order"
+            app:overallColor="@color/color1"
+            app:removeDefaultPadding="false"
+            app:rightTabText="Pending Order"
+            app:startingTab="left"
+            app:textColor="#FF0000"
+            app:wobbleAngle="3"
+            app:wobbleReturnAnimationDuration="200" />
+
+        <androidx.fragment.app.FragmentContainerView
+            android:id="@+id/orderFragContainerInFragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+    </LinearLayout>
+</layout>

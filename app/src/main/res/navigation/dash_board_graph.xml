@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/dash_board_graph.xml"
+    app:startDestination="@id/orderFragment">
+
+    <fragment
+        android:id="@+id/statusFragment"
+        android:name="com.robotechvalley.dhopaelo.ui.status.StatusFragment"
+        android:label="Status"
+        tools:layout="@layout/fragment_status" />
+    <fragment
+        android:id="@+id/orderFragment"
+        android:name="com.robotechvalley.dhopaelo.ui.home.HomeFragment"
+        android:label="Order"
+        tools:layout="@layout/fragment_home" />
+    <fragment
+        android:id="@+id/accountFragment"
+        android:name="com.robotechvalley.dhopaelo.ui.account.AccountFragment"
+        android:label="Account"
+        tools:layout="@layout/fragment_account" />
+</navigation>

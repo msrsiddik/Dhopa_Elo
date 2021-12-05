@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="20dp"
+        tools:context=".ui.order.OrderThirdStageFragment">
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_alignParentTop="true"
+            android:background="@color/color1"
+            android:textColor="@color/color5"
+            android:fontFamily="@font/arbutus"
+            android:gravity="center"
+            android:text="Payment Method"
+            android:textAlignment="center"
+            android:textSize="28sp" />
+
+        <View
+            android:id="@+id/divider"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="10dp"
+            android:layout_below="@+id/title"
+            android:background="?android:attr/listDivider" />
+
+        <RadioGroup
+            android:id="@+id/paymentGroup"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/round_boarder"
+            android:padding="5dp"
+            android:layout_centerInParent="true">
+            <RadioButton
+                android:id="@+id/onlinePay"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:checked="false"
+                android:fontFamily="@font/cherry_swash_bold"
+                android:text="Online payment gateway"/>
+            <RadioButton
+                android:id="@+id/cashPay"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:checked="true"
+                android:fontFamily="@font/cherry_swash_bold"
+                android:text="Cash on delivery"/>
+        </RadioGroup>
+
+        <Button
+            android:id="@+id/confirmOrderBtn"
+            android:layout_width="match_parent"
+            android:layout_height="?android:attr/actionBarSize"
+            android:text="Order Confirm"
+            android:fontFamily="@font/russo_one"
+            android:background="@drawable/round_boarder"
+            android:layout_alignParentBottom="true"/>
+
+    </RelativeLayout>
+</layout>

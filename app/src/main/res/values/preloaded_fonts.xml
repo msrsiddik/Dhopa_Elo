@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="preloaded_fonts" translatable="false">
+        <item>@font/arbutus</item>
+        <item>@font/cherry_swash</item>
+        <item>@font/cherry_swash_bold</item>
+        <item>@font/merriweather_bold</item>
+        <item>@font/new_rocker</item>
+        <item>@font/roboto_bold</item>
+        <item>@font/russo_one</item>
+    </array>
+</resources>
