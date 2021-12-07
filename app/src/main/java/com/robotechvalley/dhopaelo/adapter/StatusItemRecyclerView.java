@@ -1,10 +1,12 @@
 package com.robotechvalley.dhopaelo.adapter;
 
+import android.animation.ValueAnimator;
 import android.content.Context;
 import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
 
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
@@ -12,8 +14,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -60,18 +60,22 @@ public class StatusItemRecyclerView extends RecyclerView.Adapter<StatusItemRecyc
         switch (serviceName.get(position).toLowerCase()){
             case "wet wash":
                 holder.binding.imageView.setImageDrawable(context.getDrawable(R.drawable.wash));
+                holder.binding.deliveryDate.setText("Delivery: within 2 days");
                 break;
             case "wet iron":
                 holder.binding.imageView.setImageDrawable(context.getDrawable(R.drawable.iron));
+                holder.binding.deliveryDate.setText("Delivery: within 2 days");
                 break;
             case "wet wash & iron":
                 holder.binding.imageView.setImageDrawable(context.getDrawable(R.drawable.wash_iron));
+                holder.binding.deliveryDate.setText("Delivery: within 3 days");
                 break;
             case "dry wash":
                 holder.binding.imageView.setImageDrawable(context.getDrawable(R.drawable.dry_wash));
                 break;
             case "dry wash & iron":
                 holder.binding.imageView.setImageDrawable(context.getDrawable(R.drawable.dry_wash_iron));
+                holder.binding.deliveryDate.setText("Delivery: within 4 days");
                 break;
             default:
                 holder.binding.imageView.setImageDrawable(context.getDrawable(R.drawable.laundry_icon));
@@ -79,11 +83,21 @@ public class StatusItemRecyclerView extends RecyclerView.Adapter<StatusItemRecyc
 
         }
 
-
         holder.binding.serviceName.setText(serviceName.get(position));
         holder.binding.price.setText("💸 "+totalPrice);
         holder.binding.serviceOrderDate.setText(dateFormat.format(new Date(timestamp.get(position))));
         holder.binding.statusItem.setBackgroundColor(Color.red(5));
+
+        int colorFrom = context.getResources().getColor(R.color.color2);
+        int colorTo = context.getResources().getColor(R.color.color3);
+        ValueAnimator animator = ValueAnimator.ofArgb( colorFrom, colorTo);
+        animator.setDuration(1000);
+        animator.addUpdateListener(valueAnimator -> {
+            holder.binding.statusItem.setBackgroundColor((int) animator.getAnimatedValue());
+        });
+        animator.setRepeatCount(Animation.INFINITE);
+//        animator.start();
+
     }
 
     @Override

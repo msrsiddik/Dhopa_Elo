@@ -4,6 +4,7 @@ import static com.robotechvalley.dhopaelo.ui.order.OrderActivity.DELIVERY_INFO;
 import static com.robotechvalley.dhopaelo.ui.order.OrderActivity.INVOICE_DATA;
 import static com.robotechvalley.dhopaelo.ui.order.OrderActivity.PENDING_ITEM_KEY;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -47,6 +48,8 @@ public class PendingOrderFragment extends Fragment {
 
     private List<DeliveryInfo> deliveryInfoList;
 
+    private ProgressDialog progressDialog;
+
     public PendingOrderFragment() {
         // Required empty public constructor
     }
@@ -63,6 +66,9 @@ public class PendingOrderFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
 
+        progressDialog = new ProgressDialog(getContext());
+        progressDialog.setMessage("Please wait...");
+
         setupData();
 
         binding.refresh.setOnRefreshListener(() -> {
@@ -73,6 +79,8 @@ public class PendingOrderFragment extends Fragment {
     }
 
     private void setupData(){
+        progressDialog.show();
+
         FirebaseFirestore.getInstance()
                 .collection("app-user")
                 .document(FirebaseAuth.getInstance().getUid())
@@ -103,6 +111,9 @@ public class PendingOrderFragment extends Fragment {
 
             adapterSetup(list, timestamp, serviceName);
         });
+
+        progressDialog.dismiss();
+
     }
 
     private PendingOrderRecyclerView adapter;
@@ -141,7 +152,9 @@ public class PendingOrderFragment extends Fragment {
             }
         });
 
-        binding.pendingOrderRecyclerView.setAdapter(adapter);
+        if (getActivity()!=null) {
+            binding.pendingOrderRecyclerView.setAdapter(adapter);
+        }
     }
 
     private void clearDeleteData(int l){

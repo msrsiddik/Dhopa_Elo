@@ -5,6 +5,7 @@ import static com.robotechvalley.dhopaelo.ui.status.OrderStatusActivity.ORDER_DE
 import static com.robotechvalley.dhopaelo.ui.status.OrderStatusActivity.ORDER_INVOICE_DATA;
 import static com.robotechvalley.dhopaelo.ui.status.OrderStatusActivity.ORDER_PAYMENT_INFO;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -45,6 +46,8 @@ public class ConfirmOrderFragment extends Fragment {
 
     private List<PaymentInfo> paymentInfoList;
 
+    private ProgressDialog progressDialog;
+
     public ConfirmOrderFragment() {
         // Required empty public constructor
     }
@@ -59,6 +62,10 @@ public class ConfirmOrderFragment extends Fragment {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+
+        progressDialog = new ProgressDialog(getContext());
+        progressDialog.setMessage("Please wait...");
+        progressDialog.show();
 
         setupData();
 
@@ -105,13 +112,9 @@ public class ConfirmOrderFragment extends Fragment {
 
             adapterSetup(list, timestamp, serviceName);
 
-//            for (int i = 0; i < deliveryInfoList.size(); i++) {
-//                DeliveryInfo deliveryInfo = deliveryInfoList.get(i);
-//                PaymentInfo paymentInfo = paymentInfoList.get(i);
-//                if (deliveryInfo != null)
-//                Log.d("TAG", paymentInfo.serviceName+"setupData: "+deliveryInfo.getUserAddress().toString());
-//            }
         });
+
+        progressDialog.dismiss();
     }
 
     private void adapterSetup(List<Map<String, InvoiceItemModel>> list, List<Long> timestamp, List<String> serviceName) {
