@@ -37,6 +37,8 @@ import com.robotechvalley.dhopaelo.domain.view.InvoiceItemModel;
 import com.robotechvalley.dhopaelo.util.OrderModelConstant;
 
 import java.lang.reflect.Type;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -104,8 +106,10 @@ public class OrderSecondStageFragment extends Fragment {
 
         binding.placeOrderBtn.setOnClickListener(v -> {
             if (pendingItemKey.equals("")) {
+                addNameField();
                 pendingOrderPlace(secondStageListener);
             } else {
+                addNameField();
                 secondStageListener.goSecondToThird(pendingItemKey);
             }
         });
@@ -220,6 +224,12 @@ public class OrderSecondStageFragment extends Fragment {
 
             }
         });
+    }
+
+    private void addNameField(){
+        FirebaseFirestore.getInstance().collection("app-user").document(FirebaseAuth.getInstance().getUid())
+                .set(new HashMap<String, String>(Collections.singletonMap("name",FirebaseAuth.getInstance().getCurrentUser().getDisplayName())));
+
     }
 
     public interface SecondStageListener {
