@@ -28,7 +28,7 @@ public class WelcomeSplash extends AppCompatActivity {
 
         startService(new Intent(this, BannerService.class));
 
-        int randomColor = ColorGenerator.DEFAULT.getRandomColor();
+        int randomColor = ColorGenerator.MATERIAL.getRandomColor();
         binding.splashBackground.setBackgroundColor(randomColor);
 
         binding.appName.animate().translationY(-1000f).setDuration(1500).setStartDelay(500);

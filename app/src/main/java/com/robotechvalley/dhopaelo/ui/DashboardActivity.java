@@ -4,6 +4,7 @@ import static androidx.fragment.app.FragmentManager.POP_BACK_STACK_INCLUSIVE;
 
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -19,7 +20,7 @@ import com.robotechvalley.dhopaelo.ui.account.AccountFragment;
 import com.robotechvalley.dhopaelo.ui.home.HomeFragment;
 import com.robotechvalley.dhopaelo.ui.status.StatusFragment;
 
-public class DashboardActivity extends AppCompatActivity implements NavigationBarView.OnItemSelectedListener {
+public class DashboardActivity extends AppCompatActivity implements NavigationBarView.OnItemSelectedListener, HomeFragment.AccountFragmentListener {
 
     private ActivityDashboardBinding binding;
 
@@ -69,10 +70,17 @@ public class DashboardActivity extends AppCompatActivity implements NavigationBa
                         fragmentManager.popBackStack("FRAGMENT_OTHER", POP_BACK_STACK_INCLUSIVE);
                         fragmentManager.removeOnBackStackChangedListener(this);
                         // set the home button selected
-                        binding.bottomNavigation.getMenu().getItem(1).setChecked(true);
+                        binding.bottomNavigation.getMenu().getItem(0).setChecked(true);
                     }
                 }
             });
         }
+    }
+
+    @Override
+    public void gotoAccountFragment() {
+        gotoFragment(new AccountFragment(), true);
+        binding.bottomNavigation.getMenu().getItem(1).setChecked(true);
+        Toast.makeText(this, "Please add mobile number & Address", Toast.LENGTH_SHORT).show();
     }
 }

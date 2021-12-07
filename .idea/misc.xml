@@ -3,7 +3,11 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Android/Jetpack Compose/Dhopa_Elo/app/src/main/res/drawable/round_boarder_timeline.xml" value="0.2722222222222222" />
         <entry key="..\:/Android/Jetpack Compose/Dhopa_Elo/app/src/main/res/layout/activity_splash.xml" value="0.36666666666666664" />
+        <entry key="..\:/Android/Jetpack Compose/Dhopa_Elo/app/src/main/res/layout/fragment_account.xml" value="0.33425925925925926" />
+        <entry key="..\:/Android/Jetpack Compose/Dhopa_Elo/app/src/main/res/layout/fragment_status_timeline.xml" value="0.33425925925925926" />
+        <entry key="..\:/Android/Jetpack Compose/Dhopa_Elo/app/src/main/res/layout/tracking_timeline_item.xml" value="0.33425925925925926" />
         <entry key="..\:/Users/msrsi/Desktop/DhopaElo/DhopaElo/app/src/main/res/layout/coming_soon.xml" value="0.22447916666666667" />
         <entry key="..\:/Users/msrsi/Desktop/DhopaElo/DhopaElo/app/src/main/res/layout/fragment_home.xml" value="0.22447916666666667" />
         <entry key="..\:/Users/msrsi/Desktop/DhopaElo/DhopaElo/app/src/main/res/layout/list_item.xml" value="0.22447916666666667" />

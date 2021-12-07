@@ -3,30 +3,26 @@ package com.robotechvalley.dhopaelo.ui.home;
 import static com.robotechvalley.dhopaelo.ui.order.OrderActivity.SERVICE_NAME;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.collection.LruCache;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
-import java.util.Map;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import com.denzcoskun.imageslider.ImageSlider;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.robotechvalley.dhopaelo.R;
 import com.robotechvalley.dhopaelo.adapter.OrderItemRecyclerView;
 import com.robotechvalley.dhopaelo.adapter.cardSlider.SlideCardAdapter;
@@ -41,6 +37,9 @@ public class HomeFragment extends Fragment {
     private ImageSlider imageSlider;
 
     private DatabaseReference databaseReference;
+
+    private List<OrderViewItemModel> list;
+    private List<OrderViewItemModel> dryList;
 
     public HomeFragment() {
         // Required empty public constructor
@@ -67,44 +66,59 @@ public class HomeFragment extends Fragment {
 
         setupBanner();
 
-        List<OrderViewItemModel> list = new ArrayList<>();
+        list = new ArrayList<>();
         list.add(new OrderViewItemModel(R.drawable.wash, "Wet Wash"));
         list.add(new OrderViewItemModel(R.drawable.iron, "Wet Iron"));
         list.add(new OrderViewItemModel(R.drawable.wash_iron, "Wet Wash & Iron"));
 
         binding.orderRecyclerView.setAdapter(new OrderItemRecyclerView(list, getContext(), position -> {
-            Intent intent = new Intent(getContext(), OrderActivity.class);
-            intent.putExtra(OrderActivity.FROM_FRAGMENT_NAME, "HomeFragment");
-            intent.putExtra(SERVICE_NAME, list.get(position).getTitle());
-            startActivity(intent);
+            profileCheck(position, "wet");
+
         }));
 
-        List<OrderViewItemModel> dryList = new ArrayList<>();
+        dryList = new ArrayList<>();
 //        dryList.add(new OrderViewItemModel(R.drawable.dry_wash, "Dry Wash"));
         dryList.add(new OrderViewItemModel(R.drawable.dry_wash_iron, "Dry Wash & Iron"));
 
         binding.orderRecyclerViewDry.setAdapter(new OrderItemRecyclerView(dryList, getContext(), position -> {
-            Intent intent = new Intent(getContext(), OrderActivity.class);
-            intent.putExtra(OrderActivity.FROM_FRAGMENT_NAME, "HomeFragment");
-            intent.putExtra(SERVICE_NAME, dryList.get(position).getTitle());
-            startActivity(intent);
+            profileCheck(position, "dry");
         }));
     }
 
-    private void setupBanner() {
-//        FirebaseStorage storage = FirebaseStorage.getInstance();
-//        StorageReference storageRef = storage.getReference("banner");
-//        storageRef.listAll().addOnSuccessListener(listResult -> {
-//            List<StorageReference> items = listResult.getItems();
-//            SlideCardAdapter adapter = new SlideCardAdapter(getContext(), items);
-//            binding.sliderViewPager.setAdapter(adapter);
-//        });
+    private void profileCheck(int position, String serviceType){
+        FirebaseFirestore.getInstance().collection("app-user")
+                .document(FirebaseAuth.getInstance().getUid()).collection("profile")
+                .document("address").get().addOnSuccessListener(documentSnapshot -> {
+            if (documentSnapshot.exists()) {
+                if (serviceType.equals("wet")) {
+                    Intent intent = new Intent(getContext(), OrderActivity.class);
+                    intent.putExtra(OrderActivity.FROM_FRAGMENT_NAME, "HomeFragment");
+                    intent.putExtra(SERVICE_NAME, list.get(position).getTitle());
+                    startActivity(intent);
+                }
+                else if (serviceType.equals("dry")) {
+                    Intent intent = new Intent(getContext(), OrderActivity.class);
+                    intent.putExtra(OrderActivity.FROM_FRAGMENT_NAME, "HomeFragment");
+                    intent.putExtra(SERVICE_NAME, dryList.get(position).getTitle());
+                    startActivity(intent);
+                }
 
+            } else {
+                AccountFragmentListener listener = (AccountFragmentListener) getActivity();
+                listener.gotoAccountFragment();
+            }
+        });
+    }
+
+    private void setupBanner() {
         File[] files = getContext().getCacheDir().listFiles(file -> file.getName().startsWith("banner"));
         if (files != null) {
             SlideCardAdapter adapter = new SlideCardAdapter(getContext(), files);
             binding.sliderViewPager.setAdapter(adapter);
         }
+    }
 
+    public interface AccountFragmentListener {
+        void gotoAccountFragment();
     }
 }
