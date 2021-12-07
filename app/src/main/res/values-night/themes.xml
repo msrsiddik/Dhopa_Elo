@@ -2,7 +2,7 @@
     <!-- Base application theme. -->
     <style name="Theme.DhopaElo" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/color1</item>
+        <item name="colorPrimary">@color/color4</item>
         <item name="colorPrimaryVariant">@color/color2</item>
         <item name="colorOnPrimary">@color/color5</item>
         <!-- Secondary brand color. -->
