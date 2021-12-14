@@ -8,25 +8,17 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:755027031967:android:fbff651f42e4f4383fefaa",
+        "mobilesdk_app_id": "1:755027031967:android:e7de874d0e59fb0c3fefaa",
         "android_client_info": {
-          "package_name": "com.robotechvalley.dhopaelo"
+          "package_name": "com.amanullah.dhopaelo"
         }
       },
       "oauth_client": [
         {
-          "client_id": "755027031967-ifk1mjln9qa3v4bh67tup358bih5rhfo.apps.googleusercontent.com",
+          "client_id": "755027031967-hqkbi14f55l64c3kaboi7qhq1lash0ac.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.robotechvalley.dhopaelo",
-            "certificate_hash": "f38a695e5cc4eba58cd369750d72d58866b19a80"
-          }
-        },
-        {
-          "client_id": "755027031967-m3h555hf0jp63t1sj5ampl3mt3psc2n8.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.robotechvalley.dhopaelo",
+            "package_name": "com.amanullah.dhopaelo",
             "certificate_hash": "8786e2f99cd60caa86d0ac7d7e30489236201450"
           }
         },

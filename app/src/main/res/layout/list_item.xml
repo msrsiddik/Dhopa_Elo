@@ -19,7 +19,7 @@
             android:layout_height="wrap_content"
             android:ellipsize="end"
             android:fontFamily="@font/cherry_swash_bold"
-            android:maxLines="1"
+            android:maxLines="2"
             android:padding="16dp"
             android:textAppearance="?attr/textAppearanceSubtitle1" />
     </LinearLayout>

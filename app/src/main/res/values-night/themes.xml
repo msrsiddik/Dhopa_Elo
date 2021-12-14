@@ -2,13 +2,13 @@
     <!-- Base application theme. -->
     <style name="Theme.DhopaElo" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/color4</item>
-        <item name="colorPrimaryVariant">@color/color2</item>
-        <item name="colorOnPrimary">@color/color5</item>
+        <item name="colorPrimary">#fff</item>
+        <item name="colorPrimaryVariant">#fff</item>
+        <item name="colorOnPrimary">#ffff</item>
         <!-- Secondary brand color. -->
-        <item name="colorSecondary">@color/color1</item>
-        <item name="colorSecondaryVariant">@color/color2</item>
-        <item name="colorOnSecondary">@color/color6</item>
+        <item name="colorSecondary">#fff</item>
+        <item name="colorSecondaryVariant">#fff</item>
+        <item name="colorOnSecondary">#fff</item>
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
