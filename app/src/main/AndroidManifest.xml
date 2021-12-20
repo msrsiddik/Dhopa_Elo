@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.amanullah.dhopaelo" >
+    package="com.dhopaelo.dhopaelo" >
 
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
-        android:name="com.amanullah.dhopaelo.OfflineActivity"
+        android:name="com.dhopaelo.dhopaelo.OfflineActivity"
         android:allowBackup="true"
         android:icon="@drawable/logo_new_3"
         android:label="@string/app_name"
@@ -13,19 +13,19 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.DhopaElo" >
         <service
-            android:name="com.amanullah.dhopaelo.service.BannerService"
+            android:name="com.dhopaelo.dhopaelo.service.BannerService"
             android:enabled="true"
             android:exported="true" >
         </service>
 
         <activity
-            android:name="com.amanullah.dhopaelo.ui.order.OrderActivity"
+            android:name="com.dhopaelo.dhopaelo.ui.order.OrderActivity"
             android:exported="false" />
         <activity
-            android:name="com.amanullah.dhopaelo.ui.status.OrderStatusActivity"
+            android:name="com.dhopaelo.dhopaelo.ui.status.OrderStatusActivity"
             android:exported="false" />
         <activity
-            android:name="com.amanullah.dhopaelo.ui.DashboardActivity"
+            android:name="com.dhopaelo.dhopaelo.ui.DashboardActivity"
             android:exported="true"
             android:screenOrientation="portrait" >
 
@@ -37,7 +37,7 @@
             <!-- </intent-filter> -->
         </activity>
         <activity
-            android:name="com.amanullah.dhopaelo.WelcomeSplash"
+            android:name="com.dhopaelo.dhopaelo.WelcomeSplash"
             android:exported="true" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -46,7 +46,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.amanullah.dhopaelo.ui.login.LoginActivity"
+            android:name="com.dhopaelo.dhopaelo.ui.login.LoginActivity"
             android:exported="true" />
 
         <meta-data

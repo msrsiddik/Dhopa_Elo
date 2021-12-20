@@ -8,17 +8,17 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:755027031967:android:e7de874d0e59fb0c3fefaa",
+        "mobilesdk_app_id": "1:755027031967:android:fef672ce6b15e5f03fefaa",
         "android_client_info": {
-          "package_name": "com.amanullah.dhopaelo"
+          "package_name": "com.dhopaelo.dhopaelo"
         }
       },
       "oauth_client": [
         {
-          "client_id": "755027031967-hqkbi14f55l64c3kaboi7qhq1lash0ac.apps.googleusercontent.com",
+          "client_id": "755027031967-n6u7s5qmqbs1uv1t297e17iitk0dgc00.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.amanullah.dhopaelo",
+            "package_name": "com.dhopaelo.dhopaelo",
             "certificate_hash": "8786e2f99cd60caa86d0ac7d7e30489236201450"
           }
         },
