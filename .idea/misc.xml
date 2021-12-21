@@ -14,13 +14,18 @@
         <entry key="..\:/Users/msrsi/Desktop/DhopaElo/DhopaElo/app/src/main/res/layout/order_service_item.xml" value="0.22447916666666667" />
         <entry key="..\:/Users/msrsi/Desktop/DhopaElo/DhopaElo/app/src/main/res/layout/status_item.xml" value="0.22447916666666667" />
         <entry key="..\:/Users/msrsi/StudioProjects/Dhopa_Elo/app/src/main/res/drawable/background_color.xml" value="0.2324074074074074" />
+        <entry key="..\:/Users/msrsi/StudioProjects/Dhopa_Elo/app/src/main/res/layout/activity_order.xml" value="0.22447916666666667" />
+        <entry key="..\:/Users/msrsi/StudioProjects/Dhopa_Elo/app/src/main/res/layout/fragment_all_service.xml" value="0.25" />
+        <entry key="..\:/Users/msrsi/StudioProjects/Dhopa_Elo/app/src/main/res/layout/fragment_order_first_stage.xml" value="0.19701086956521738" />
+        <entry key="..\:/Users/msrsi/StudioProjects/Dhopa_Elo/app/src/main/res/layout/fragment_order_second_stage.xml" value="0.19701086956521738" />
+        <entry key="..\:/Users/msrsi/StudioProjects/Dhopa_Elo/app/src/main/res/layout/invoice_view.xml" value="0.25" />
         <entry key="..\:/Users/msrsi/StudioProjects/Dhopa_Elo/app/src/main/res/layout/list_item.xml" value="0.1574074074074074" />
         <entry key="..\:/Users/msrsi/StudioProjects/Dhopa_Elo/app/src/main/res/layout/order_item.xml" value="0.22447916666666667" />
         <entry key="..\:/Users/msrsi/StudioProjects/Dhopa_Elo/app/src/main/res/layout/status_item.xml" value="0.25" />
       </map>
     </option>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_8" default="true" project-jdk-name="1.8" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" project-jdk-name="1.8" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
   <component name="ProjectType">

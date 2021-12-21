@@ -1,6 +1,8 @@
 package com.robotechvalley.dhopaelo.domain.view;
 
-public class OrderViewItemModel {
+import java.io.Serializable;
+
+public class OrderViewItemModel implements Serializable {
     private int image;
     private String title;
 

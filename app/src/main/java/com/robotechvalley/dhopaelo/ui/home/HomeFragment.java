@@ -1,5 +1,6 @@
 package com.robotechvalley.dhopaelo.ui.home;
 
+import static com.robotechvalley.dhopaelo.ui.order.OrderActivity.SELECT_POSITION;
 import static com.robotechvalley.dhopaelo.ui.order.OrderActivity.SERVICE_NAME;
 
 import android.content.Intent;
@@ -23,6 +24,7 @@ import com.denzcoskun.imageslider.ImageSlider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.gson.Gson;
 import com.robotechvalley.dhopaelo.R;
 import com.robotechvalley.dhopaelo.adapter.OrderItemRecyclerView;
 import com.robotechvalley.dhopaelo.adapter.cardSlider.SlideCardAdapter;
@@ -82,6 +84,7 @@ public class HomeFragment extends Fragment {
 
         binding.orderRecyclerViewDry.setAdapter(new OrderItemRecyclerView(dryList, getContext(), position -> {
             profileCheck(position, "dry");
+
         }));
     }
 
@@ -93,13 +96,23 @@ public class HomeFragment extends Fragment {
                 if (serviceType.equals("wet")) {
                     Intent intent = new Intent(getContext(), OrderActivity.class);
                     intent.putExtra(OrderActivity.FROM_FRAGMENT_NAME, "HomeFragment");
-                    intent.putExtra(SERVICE_NAME, list.get(position).getTitle());
+//                    intent.putExtra(SERVICE_NAME, list.get(position).getTitle());
+                    List<OrderViewItemModel> tmpList = new ArrayList<>();
+                    tmpList.addAll(list);
+                    tmpList.addAll(dryList);
+                    intent.putExtra("list", new Gson().toJson(tmpList));
+                    intent.putExtra(SELECT_POSITION, position);
                     startActivity(intent);
                 }
                 else if (serviceType.equals("dry")) {
                     Intent intent = new Intent(getContext(), OrderActivity.class);
                     intent.putExtra(OrderActivity.FROM_FRAGMENT_NAME, "HomeFragment");
-                    intent.putExtra(SERVICE_NAME, dryList.get(position).getTitle());
+//                    intent.putExtra(SERVICE_NAME, dryList.get(position).getTitle());
+                    List<OrderViewItemModel> tmpList = new ArrayList<>();
+                    tmpList.addAll(list);
+                    tmpList.addAll(dryList);
+                    intent.putExtra("list", new Gson().toJson(tmpList));
+                    intent.putExtra(SELECT_POSITION, (position+list.size()));
                     startActivity(intent);
                 }
 

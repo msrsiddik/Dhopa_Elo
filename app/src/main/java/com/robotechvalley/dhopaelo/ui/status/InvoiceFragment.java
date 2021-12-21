@@ -85,7 +85,7 @@ public class InvoiceFragment extends Fragment {
     private void addItemInInvoice(LinearLayout itemContainer, InvoiceItemModel itemModel) {
         InvoiceItemViewBinding itemViewBinding = DataBindingUtil.inflate(LayoutInflater.from(getContext()), R.layout.invoice_item_view, itemContainer, false);
 
-        itemViewBinding.itemName.setText(itemModel.getItemName());
+        itemViewBinding.itemName.setText(itemModel.getItemName() + " ( "+itemModel.getServiceName()+" ) ");
         itemViewBinding.itemQuantity.setText(itemModel.getItemQuantity() + "");
         itemViewBinding.price.setText(itemModel.gettPrice() + "");
 

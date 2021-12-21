@@ -5,15 +5,17 @@ public class InvoiceItemModel {
     private int itemQuantity;
     private double unitPrice;
     private double tPrice;
+    private String serviceName;
 
     public InvoiceItemModel() {
     }
 
-    public InvoiceItemModel(String itemName, int itemQuantity, double unitPrice, double tPrice) {
+    public InvoiceItemModel(String itemName, int itemQuantity, double unitPrice, double tPrice, String serviceName) {
         this.itemName = itemName;
         this.itemQuantity = itemQuantity;
         this.unitPrice = unitPrice;
         this.tPrice = tPrice;
+        this.serviceName = serviceName;
     }
 
     public String getItemName() {
@@ -48,4 +50,22 @@ public class InvoiceItemModel {
         this.tPrice = tPrice;
     }
 
+    public String getServiceName() {
+        return serviceName;
+    }
+
+    public void setServiceName(String serviceName) {
+        this.serviceName = serviceName;
+    }
+
+    @Override
+    public String toString() {
+        return "InvoiceItemModel{" +
+                "itemName='" + itemName + '\'' +
+                ", itemQuantity=" + itemQuantity +
+                ", unitPrice=" + unitPrice +
+                ", tPrice=" + tPrice +
+                ", serviceName='" + serviceName + '\'' +
+                '}';
+    }
 }

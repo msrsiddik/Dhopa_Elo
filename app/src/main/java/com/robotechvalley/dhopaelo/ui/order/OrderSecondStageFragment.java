@@ -6,6 +6,7 @@ import static com.robotechvalley.dhopaelo.ui.order.OrderActivity.INVOICE_DATA;
 import static com.robotechvalley.dhopaelo.ui.order.OrderActivity.PENDING_ITEM_KEY;
 import static com.robotechvalley.dhopaelo.ui.order.OrderActivity.SERVICE_NAME;
 
+import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,6 +17,7 @@ import android.widget.Toast;
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
@@ -34,10 +36,10 @@ import com.robotechvalley.dhopaelo.domain.DeliveryInfo;
 import com.robotechvalley.dhopaelo.domain.UserAddress;
 import com.robotechvalley.dhopaelo.domain.UserInfo;
 import com.robotechvalley.dhopaelo.domain.view.InvoiceItemModel;
+import com.robotechvalley.dhopaelo.ui.ToolBarSetup;
 import com.robotechvalley.dhopaelo.util.OrderModelConstant;
 
 import java.lang.reflect.Type;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -68,6 +70,7 @@ public class OrderSecondStageFragment extends Fragment {
         return binding.getRoot();
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
 
@@ -78,6 +81,8 @@ public class OrderSecondStageFragment extends Fragment {
             serviceName = bundle.getString(SERVICE_NAME);
             pendingItemKey = bundle.getString(PENDING_ITEM_KEY);
             String dInfoData = bundle.getString(DELIVERY_INFO);
+
+            ToolBarSetup.setTitle(getActivity(), serviceName, false);
 
             DeliveryInfo deliveryInfo = new Gson().fromJson(dInfoData, DeliveryInfo.class);
             if (deliveryInfo != null) {
@@ -192,10 +197,12 @@ public class OrderSecondStageFragment extends Fragment {
         }
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     private void addItemInInvoice(LinearLayout itemContainer, InvoiceItemModel itemModel) {
         InvoiceItemViewBinding itemViewBinding = DataBindingUtil.inflate(LayoutInflater.from(getContext()), R.layout.invoice_item_view, itemContainer, false);
 
-        itemViewBinding.itemName.setText(itemModel.getItemName());
+        itemViewBinding.itemName.setText(itemModel.getItemName() +" ( "+itemModel.getServiceName()+" ) ");
+        itemViewBinding.itemName.setTooltipText(itemModel.getServiceName());
         itemViewBinding.itemQuantity.setText(itemModel.getItemQuantity() + "");
         itemViewBinding.price.setText(itemModel.gettPrice() + "");
 

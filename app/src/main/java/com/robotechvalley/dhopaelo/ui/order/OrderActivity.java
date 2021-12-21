@@ -6,14 +6,22 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.os.Bundle;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Type;
+import java.util.List;
 import java.util.Map;
 
+import com.google.gson.reflect.TypeToken;
 import com.robotechvalley.dhopaelo.R;
+import com.robotechvalley.dhopaelo.adapter.order.AllService;
 import com.robotechvalley.dhopaelo.databinding.ActivityOrderBinding;
+import com.robotechvalley.dhopaelo.domain.AllServiceOneInvoiceModel;
 import com.robotechvalley.dhopaelo.domain.view.InvoiceItemModel;
+import com.robotechvalley.dhopaelo.domain.view.OrderViewItemModel;
 
 public class OrderActivity extends AppCompatActivity implements
         OrderFirstStageFragment.FirstStageListener,
@@ -24,6 +32,7 @@ public class OrderActivity extends AppCompatActivity implements
     public static final String FROM_FRAGMENT_NAME = "fragment_name";
 
     public static final String SERVICE_NAME = "serviceName";
+    public static final String SELECT_POSITION = "select_position";
     public static final String INVOICE_DATA = "invoice_data";
     public static final String PENDING_ITEM_KEY = "pendingItemKey";
     public static final String DELIVERY_INFO = "deliveryInfo";
@@ -40,11 +49,17 @@ public class OrderActivity extends AppCompatActivity implements
 
         switch (fromFragName){
             case "HomeFragment":
-                OrderFirstStageFragment orderFirstStageFragment = new OrderFirstStageFragment();
+//                OrderFirstStageFragment orderFirstStageFragment = new OrderFirstStageFragment();
                 Bundle bundle = new Bundle();
                 bundle.putString(SERVICE_NAME, getIntent().getStringExtra(SERVICE_NAME));
-                orderFirstStageFragment.setArguments(bundle);
-                gotoFragment(orderFirstStageFragment, false);
+//                orderFirstStageFragment.setArguments(bundle);
+//                gotoFragment(orderFirstStageFragment, false);
+
+                AllServiceFragment allServiceFragment = new AllServiceFragment();
+                bundle.putString("list", getIntent().getStringExtra("list"));
+                bundle.putInt(SELECT_POSITION, getIntent().getIntExtra(SELECT_POSITION, 0));
+                allServiceFragment.setArguments(bundle);
+                gotoFragment(allServiceFragment, false);
                 break;
             case "PendingOrderFragment":
                 OrderSecondStageFragment fragment = new OrderSecondStageFragment();
@@ -97,4 +112,9 @@ public class OrderActivity extends AppCompatActivity implements
     public void goSecondToEditAddress() {
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        AllServiceOneInvoiceModel.destroy();
+    }
 }

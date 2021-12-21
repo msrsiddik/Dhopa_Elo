@@ -35,29 +35,36 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.UUID;
 
 import com.robotechvalley.dhopaelo.R;
 import com.robotechvalley.dhopaelo.databinding.FragmentOrderFirstStageBinding;
 import com.robotechvalley.dhopaelo.databinding.ListItemBinding;
 import com.robotechvalley.dhopaelo.databinding.OrderItemBinding;
+import com.robotechvalley.dhopaelo.domain.AllServiceOneInvoiceModel;
 import com.robotechvalley.dhopaelo.domain.ProductInfoModel;
 import com.robotechvalley.dhopaelo.domain.view.InvoiceItemModel;
+import com.robotechvalley.dhopaelo.listener.InvoiceListener;
 import com.robotechvalley.dhopaelo.text.drawable.ColorGenerator;
 import com.robotechvalley.dhopaelo.text.drawable.TextDrawable;
 import com.robotechvalley.dhopaelo.ui.ToolBarSetup;
 
-public class OrderFirstStageFragment extends Fragment {
+public class OrderFirstStageFragment extends Fragment implements InvoiceListener {
     private FragmentOrderFirstStageBinding binding;
 
     private FirebaseFirestore firestore;
 
-    private List<ProductInfoModel> productInfoModels = new ArrayList<>();
+    private final List<ProductInfoModel> productInfoModels = new ArrayList<>();
 
     private int counter = 0;
     private int totalProduct = 0;
     private double totalPrice = 0;
+
+    private final AllServiceOneInvoiceModel oneInvoiceModel = AllServiceOneInvoiceModel.getInstance();
 
     public OrderFirstStageFragment() {
         // Required empty public constructor
@@ -68,6 +75,7 @@ public class OrderFirstStageFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         firestore = FirebaseFirestore.getInstance();
+        AllServiceOneInvoiceModel.getInstance().addListener(this);
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_order_first_stage, container, false);
         return binding.getRoot();
     }
@@ -122,15 +130,16 @@ public class OrderFirstStageFragment extends Fragment {
                     }
                     if (productInfoModel != null) {
                         productInfoModels.add(productInfoModel);
+//                        oneInvoiceModel.addProductInfoModel(productInfoModel);
                     }
                 }
             }
         });
 
-        addItemToContainer(binding.ItemContainer);
+        addItemToContainer(binding.ItemContainer, serviceName);
 
         binding.addItemBtn.setOnClickListener(v -> {
-            addItemToContainer(binding.ItemContainer);
+            addItemToContainer(binding.ItemContainer, serviceName);
         });
 
         binding.totalQuantity.getEditText().setText("00");
@@ -141,46 +150,62 @@ public class OrderFirstStageFragment extends Fragment {
 
             Map<String, InvoiceItemModel> invoiceItemModelMap = new HashMap<>();
 
-            for (int i = 1; i < binding.ItemContainer.getChildCount(); i++) {
-                AutoCompleteTextView itemName = binding.ItemContainer.getChildAt(i).findViewById(R.id.productList);
-                TextInputEditText quantity = binding.ItemContainer.getChildAt(i).findViewById(R.id.quantity);
-
-                for (ProductInfoModel infoModel : productInfoModels) {
-                    if (infoModel.getName().equals(itemName.getText().toString())) {
-                        if (quantity.getText().toString() != null && !quantity.getText().toString().isEmpty()) {
-                            int itemQty = Integer.parseInt(quantity.getText().toString());
-                            double unitPrice = infoModel.getPrice();
-
-                            invoiceItemModelMap.put(i + "",
-                                    new InvoiceItemModel(
-                                            itemName.getText().toString(),
-                                            itemQty,
-                                            unitPrice,
-                                            itemQty * unitPrice));
-                        } else {
-                            Toast.makeText(getContext(), "insert quantity", Toast.LENGTH_SHORT).show();
-                            return;
-                        }
-
-                    }
-                }
+            Set<String> services = new HashSet<>();
+            int i = 1;
+            for (InvoiceItemModel invoiceItemModel : oneInvoiceModel.getInvoiceItemModels().values()) {
+                invoiceItemModelMap.put(i+"", invoiceItemModel);
+                services.add(invoiceItemModel.getServiceName());
+                i++;
             }
+
+//            for (int i = 1; i < binding.ItemContainer.getChildCount(); i++) {
+//                AutoCompleteTextView itemName = binding.ItemContainer.getChildAt(i).findViewById(R.id.productList);
+//                TextInputEditText quantity = binding.ItemContainer.getChildAt(i).findViewById(R.id.quantity);
+//
+//                for (ProductInfoModel infoModel : productInfoModels) {
+//                    if (infoModel.getName().equals(itemName.getText().toString())) {
+//                        if (quantity.getText().toString() != null && !quantity.getText().toString().isEmpty()) {
+//                            int itemQty = Integer.parseInt(quantity.getText().toString());
+//                            double unitPrice = infoModel.getPrice();
+//
+//                            invoiceItemModelMap.put(i + "",
+//                                    new InvoiceItemModel(
+//                                            itemName.getText().toString(),
+//                                            itemQty,
+//                                            unitPrice,
+//                                            itemQty * unitPrice,
+//                                            serviceName));
+//                        } else {
+//                            Toast.makeText(getContext(), "insert quantity", Toast.LENGTH_SHORT).show();
+//                            return;
+//                        }
+//
+//                    }
+//                }
+//            }
 
             if (!invoiceItemModelMap.isEmpty()) {
                 if(totalPrice != 0.0) {
-                    firstStageListener.goFirstToSecond(invoiceItemModelMap, serviceName);
+                    firstStageListener.goFirstToSecond(invoiceItemModelMap, services.toString());
+                } else {
+                    Toast.makeText(getContext(), "Please add minimum 1 item", Toast.LENGTH_SHORT).show();
                 }
             } else {
                 Toast.makeText(getContext(), "Please add minimum 1 item", Toast.LENGTH_SHORT).show();
             }
 
+            Log.d("OrderFirstStage", "onViewCreated: "+oneInvoiceModel.getInvoiceItemModels());
+
         });
     }
 
-    private void addItemToContainer(LinearLayout itemContainer) {
+    private void addItemToContainer(LinearLayout itemContainer, String serviceName) {
         OrderItemBinding itemBinding = DataBindingUtil.inflate(LayoutInflater.from(getContext()), R.layout.order_item, itemContainer, false);
 
         itemBinding.counter.setText(++counter + "");
+
+        String key = UUID.randomUUID().toString();
+        InvoiceItemModel itemModel = new InvoiceItemModel();
 
         final ProductInfoModel[] product = new ProductInfoModel[1];
 
@@ -190,17 +215,22 @@ public class OrderFirstStageFragment extends Fragment {
                 int i = Integer.parseInt(s1);
                 totalProduct -= i;
                 totalPrice -= i * product[0].getPrice();
-                binding.totalQuantity.getEditText().setText(totalProduct + "");
-                binding.totalAmount.getEditText().setText(totalPrice + "");
+                oneInvoiceModel.setTotalProduct(oneInvoiceModel.getTotalProduct()-i);
+                oneInvoiceModel.setTotalPrice(oneInvoiceModel.getTotalPrice() - (i * product[0].getPrice()));
+                oneInvoiceModel.getInvoiceItemModels().remove(key);
+//                binding.totalQuantity.getEditText().setText(totalProduct + "");
+//                binding.totalQuantity.getEditText().setText(oneInvoiceModel.getTotalProduct() + "");
+//                binding.totalAmount.getEditText().setText(totalPrice + "");
+//                binding.totalAmount.getEditText().setText(oneInvoiceModel.getTotalPrice() + "");
             }
             itemContainer.removeView(itemBinding.getRoot());
             --counter;
         });
 
-        List<String> list = new ArrayList<>();
-        for (ProductInfoModel infoModel : productInfoModels) {
-            list.add(infoModel.getName());
-        }
+//        List<String> list = new ArrayList<>();
+//        for (ProductInfoModel infoModel : productInfoModels) {
+//            list.add(infoModel.getName());
+//        }
 
         ProductListAdapter listAdapter = new ProductListAdapter(getContext(), R.layout.list_item, productInfoModels);
         itemBinding.productList.setAdapter(listAdapter);
@@ -212,8 +242,17 @@ public class OrderFirstStageFragment extends Fragment {
                     int i = Integer.parseInt(s.toString());
                     totalProduct -= i;
                     totalPrice -= i * product[0].getPrice();
-                    binding.totalQuantity.getEditText().setText(totalProduct + "");
-                    binding.totalAmount.getEditText().setText(totalPrice + "");
+                    oneInvoiceModel.setTotalProduct(oneInvoiceModel.getTotalProduct() - i);
+                    oneInvoiceModel.setTotalPrice(oneInvoiceModel.getTotalPrice() - (i * product[0].getPrice()));
+
+                    itemModel.setItemQuantity(itemModel.getItemQuantity() - i);
+                    itemModel.setUnitPrice(itemModel.getUnitPrice() - product[0].getPrice());
+                    itemModel.settPrice(itemModel.gettPrice() - (i * product[0].getPrice()));
+
+//                    binding.totalQuantity.getEditText().setText(totalProduct + "");
+//                    binding.totalAmount.getEditText().setText(totalPrice + "");
+//                    binding.totalQuantity.getEditText().setText(oneInvoiceModel.getTotalProduct() + "");
+//                    binding.totalAmount.getEditText().setText(oneInvoiceModel.getTotalPrice() + "");
                 }
             }
 
@@ -228,8 +267,18 @@ public class OrderFirstStageFragment extends Fragment {
                     int i = Integer.parseInt(s.toString());
                     totalProduct += i;
                     totalPrice += i * product[0].getPrice();
-                    binding.totalQuantity.getEditText().setText(totalProduct + "");
-                    binding.totalAmount.getEditText().setText(totalPrice + "");
+                    oneInvoiceModel.setTotalProduct(oneInvoiceModel.getTotalProduct() + i);
+                    oneInvoiceModel.setTotalPrice(oneInvoiceModel.getTotalPrice() + (i * product[0].getPrice()));
+
+
+                    itemModel.setItemQuantity(itemModel.getItemQuantity() + i);
+                    itemModel.setUnitPrice(itemModel.getUnitPrice() + product[0].getPrice());
+                    itemModel.settPrice(itemModel.gettPrice() + (i * product[0].getPrice()));
+
+//                    binding.totalQuantity.getEditText().setText(totalProduct + "");
+//                    binding.totalAmount.getEditText().setText(totalPrice + "");
+//                    binding.totalQuantity.getEditText().setText(oneInvoiceModel.getTotalProduct() + "");
+//                    binding.totalAmount.getEditText().setText(oneInvoiceModel.getTotalPrice() + "");
                 }
             }
         });
@@ -238,8 +287,18 @@ public class OrderFirstStageFragment extends Fragment {
             product[0] = productInfoModels.get(position);
             itemBinding.perItemRate.setText(String.format("%s per item %s tk", product[0].getName(), product[0].getPrice()));
             itemBinding.quantity.setEnabled(true);
+
+            itemModel.setItemName(product[0].getName());
+            itemModel.setServiceName(serviceName);
+            oneInvoiceModel.addInvoiceItemModel(key, itemModel);
         });
         itemContainer.addView(itemBinding.getRoot());
+    }
+
+    @Override
+    public void update() {
+        binding.totalQuantity.getEditText().setText(oneInvoiceModel.getTotalProduct() + "");
+        binding.totalAmount.getEditText().setText(oneInvoiceModel.getTotalPrice() + "");
     }
 
     private class ProductListAdapter extends ArrayAdapter<ProductInfoModel> {
