@@ -164,7 +164,11 @@ public class OrderFirstStageFragment extends Fragment {
 
             if (!invoiceItemModelMap.isEmpty()) {
                 if(totalPrice != 0.0) {
-                    firstStageListener.goFirstToSecond(invoiceItemModelMap, serviceName);
+                    if (totalPrice < 200) {
+                        Toast.makeText(getContext(), "Our minimum order price is 200 Taka. So please choose at least 200 Tk or more", Toast.LENGTH_LONG).show();
+                    } else {
+                        firstStageListener.goFirstToSecond(invoiceItemModelMap, serviceName);
+                    }
                 }
             } else {
                 Toast.makeText(getContext(), "Please add minimum 1 item", Toast.LENGTH_SHORT).show();

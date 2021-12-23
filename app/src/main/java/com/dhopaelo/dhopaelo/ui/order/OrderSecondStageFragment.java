@@ -6,6 +6,7 @@ import static com.dhopaelo.dhopaelo.ui.order.OrderActivity.INVOICE_DATA;
 import static com.dhopaelo.dhopaelo.ui.order.OrderActivity.PENDING_ITEM_KEY;
 import static com.dhopaelo.dhopaelo.ui.order.OrderActivity.SERVICE_NAME;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -53,6 +54,8 @@ public class OrderSecondStageFragment extends Fragment {
     private UserAddress userAddress;
     private UserInfo userInfo;
 
+    double totalPrice = 0;
+
     public OrderSecondStageFragment() {
         // Required empty public constructor
     }
@@ -88,7 +91,7 @@ public class OrderSecondStageFragment extends Fragment {
             Type type = new TypeToken<Map<String, InvoiceItemModel>>() {}.getType();
             invoiceItemModelMap = new Gson().fromJson(invoiceData, type);
 
-            double totalPrice = 0;
+//            double totalPrice = 0;
             for (InvoiceItemModel value : invoiceItemModelMap.values()) {
                 addItemInInvoice(binding.invoice.itemContainer, value);
                 totalPrice += value.gettPrice();
@@ -104,6 +107,7 @@ public class OrderSecondStageFragment extends Fragment {
         SecondStageListener secondStageListener = (SecondStageListener) getActivity();
 
         binding.placeOrderBtn.setOnClickListener(v -> {
+
             if (pendingItemKey.equals("")) {
                 addNameField();
                 pendingOrderPlace(secondStageListener);

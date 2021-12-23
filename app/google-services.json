@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "755027031967-ltksv8c35ee3nd6uphn8mp3of4tddges.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.dhopaelo.dhopaelo",
+            "certificate_hash": "ca00fa5338ed58fe1f8b8cc0c93ab7c7bf83b4fc"
+          }
+        },
+        {
           "client_id": "755027031967-n6u7s5qmqbs1uv1t297e17iitk0dgc00.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {

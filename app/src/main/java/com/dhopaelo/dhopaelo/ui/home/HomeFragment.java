@@ -30,6 +30,7 @@ import com.dhopaelo.dhopaelo.ui.ToolBarSetup;
 import com.dhopaelo.dhopaelo.ui.order.OrderActivity;
 
 public class HomeFragment extends Fragment {
+
     private FragmentHomeBinding binding;
 
     private ImageSlider imageSlider;

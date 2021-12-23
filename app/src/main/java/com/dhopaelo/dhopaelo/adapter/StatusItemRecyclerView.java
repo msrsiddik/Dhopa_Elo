@@ -60,25 +60,26 @@ public class StatusItemRecyclerView extends RecyclerView.Adapter<StatusItemRecyc
         switch (serviceName.get(position).toLowerCase()){
             case "wet wash":
                 holder.binding.imageView.setImageDrawable(context.getDrawable(R.drawable.wash));
-                holder.binding.deliveryDate.setText("Delivery: within 2 days");
+                holder.binding.deliveryDate.setText("Delivery: within 2 to 3 days");
                 break;
             case "wet iron":
                 holder.binding.imageView.setImageDrawable(context.getDrawable(R.drawable.iron));
-                holder.binding.deliveryDate.setText("Delivery: within 2 days");
+                holder.binding.deliveryDate.setText("Delivery: within 2 to 3 days");
                 break;
             case "wet wash & iron":
                 holder.binding.imageView.setImageDrawable(context.getDrawable(R.drawable.wash_iron));
-                holder.binding.deliveryDate.setText("Delivery: within 3 days");
+                holder.binding.deliveryDate.setText("Delivery: within 3 to 4 days");
                 break;
-            case "dry wash":
-                holder.binding.imageView.setImageDrawable(context.getDrawable(R.drawable.dry_wash));
-                break;
+//            case "dry wash":
+//                holder.binding.imageView.setImageDrawable(context.getDrawable(R.drawable.dry_wash));
+//                break;
             case "dry wash & iron":
                 holder.binding.imageView.setImageDrawable(context.getDrawable(R.drawable.dry_wash_iron));
-                holder.binding.deliveryDate.setText("Delivery: within 4 days");
+                holder.binding.deliveryDate.setText("Delivery: within 4 to 5 days");
                 break;
             default:
-                holder.binding.imageView.setImageDrawable(context.getDrawable(R.drawable.laundry_icon));
+                holder.binding.imageView.setImageDrawable(context.getDrawable(R.drawable.logo));
+                holder.binding.deliveryDate.setText("Delivery: within 5 to 6 days");
                 break;
 
         }

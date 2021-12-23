@@ -1,11 +1,13 @@
 package com.dhopaelo.dhopaelo.domain;
 
 public class StatusTimelineDetailsModel {
+
     private String orderKey;
     private String title;
     private String message;
     private String estimateTime;
     private int image;
+
     private boolean step1Complete;
     private boolean step2Complete;
     private boolean step3Complete;
@@ -16,6 +18,7 @@ public class StatusTimelineDetailsModel {
     }
 
     public StatusTimelineDetailsModel(String orderKey, String title, String message, String estimateTime, int image) {
+
         this.orderKey = orderKey;
         this.title = title;
         this.message = message;
@@ -24,6 +27,7 @@ public class StatusTimelineDetailsModel {
     }
 
     public StatusTimelineDetailsModel(String orderKey, String title, String message, String estimateTime, int image, boolean step1Complete) {
+
         this.orderKey = orderKey;
         this.title = title;
         this.message = message;
@@ -52,9 +56,7 @@ public class StatusTimelineDetailsModel {
         return image;
     }
 
-    public boolean isStep1Complete() {
-        return step1Complete;
-    }
+    public boolean isStep1Complete() { return step1Complete; }
 
     public boolean isStep2Complete() {
         return step2Complete;

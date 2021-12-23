@@ -2,12 +2,10 @@ package com.dhopaelo.dhopaelo.ui.account;
 
 import android.app.ActivityManager;
 import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -19,7 +17,6 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
-
 import com.bumptech.glide.Glide;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
@@ -33,7 +30,6 @@ import com.dhopaelo.dhopaelo.databinding.FragmentAccountBinding;
 import com.dhopaelo.dhopaelo.domain.UserAddress;
 import com.dhopaelo.dhopaelo.domain.UserInfo;
 import com.dhopaelo.dhopaelo.ui.ToolBarSetup;
-import com.squareup.picasso.Picasso;
 
 public class AccountFragment extends Fragment {
 
