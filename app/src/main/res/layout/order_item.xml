@@ -69,6 +69,7 @@
                         android:enabled="false"
                         android:fontFamily="@font/cherry_swash_bold"
                         android:inputType="number"
+                        android:imeOptions="actionDone"
                         android:maxLength="2" />
 
                 </com.google.android.material.textfield.TextInputLayout>

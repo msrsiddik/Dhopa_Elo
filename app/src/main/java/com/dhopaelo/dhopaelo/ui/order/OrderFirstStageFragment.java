@@ -17,9 +17,11 @@ import androidx.fragment.app.Fragment;
 
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.LinearLayout;
@@ -127,10 +129,23 @@ public class OrderFirstStageFragment extends Fragment {
 
         binding.addItemBtn.setOnClickListener(v -> {
             addItemToContainer(binding.ItemContainer);
+            binding.confirmBtn.setVisibility(View.GONE);
+            binding.doneBtn.setVisibility(View.VISIBLE);
         });
 
         binding.totalQuantity.getEditText().setText("00");
         binding.totalAmount.getEditText().setText("00.00");
+
+        binding.doneBtn.setOnClickListener(v -> {
+
+            if (totalPrice != 0) {
+                binding.doneBtn.onEditorAction(EditorInfo.IME_ACTION_DONE);
+                binding.confirmBtn.setVisibility(View.VISIBLE);
+                binding.doneBtn.setVisibility(View.GONE);
+            } else {
+                Toast.makeText(getContext(), "first please choose an item", Toast.LENGTH_SHORT).show();
+            }
+        });
 
         binding.confirmBtn.setOnClickListener(v -> {
             FirstStageListener firstStageListener = (FirstStageListener) getActivity();
@@ -163,13 +178,18 @@ public class OrderFirstStageFragment extends Fragment {
             }
 
             if (!invoiceItemModelMap.isEmpty()) {
-                if(totalPrice != 0.0) {
-                    if (totalPrice < 200) {
-                        Toast.makeText(getContext(), "Our minimum order price is 200 Taka. So please choose at least 200 Tk or more", Toast.LENGTH_LONG).show();
-                    } else {
-                        firstStageListener.goFirstToSecond(invoiceItemModelMap, serviceName);
-                    }
-                }
+
+                assert firstStageListener != null;
+                firstStageListener.goFirstToSecond(invoiceItemModelMap, serviceName);
+
+//                if(totalPrice != 0.0) {
+//                    if (totalPrice < 200) {
+//                        Toast.makeText(getContext(), "Our minimum order price is 200 Taka. So please choose at least 200 Tk or more", Toast.LENGTH_LONG).show();
+//                    } else {
+//                        assert firstStageListener != null;
+//                        firstStageListener.goFirstToSecond(invoiceItemModelMap, serviceName);
+//                    }
+//                }
             } else {
                 Toast.makeText(getContext(), "Please add minimum 1 item", Toast.LENGTH_SHORT).show();
             }
