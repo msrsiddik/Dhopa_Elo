@@ -1,5 +1,7 @@
 package com.robotechvalley.dhopaelo.ui.order;
 
+import static com.robotechvalley.dhopaelo.ui.order.OrderActivity.FROM_FRAGMENT_NAME;
+import static com.robotechvalley.dhopaelo.ui.order.OrderActivity.INVOICE_DATA;
 import static com.robotechvalley.dhopaelo.ui.order.OrderActivity.SERVICE_NAME;
 import static com.robotechvalley.dhopaelo.util.ServicePriceConstant.DRY_WASH_AND_IRON_PRICE;
 import static com.robotechvalley.dhopaelo.util.ServicePriceConstant.DRY_WASH_PRICE;
@@ -8,6 +10,7 @@ import static com.robotechvalley.dhopaelo.util.ServicePriceConstant.ITEM_NAME;
 import static com.robotechvalley.dhopaelo.util.ServicePriceConstant.WASH_PRICE;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -41,6 +44,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
+import com.google.gson.Gson;
 import com.robotechvalley.dhopaelo.R;
 import com.robotechvalley.dhopaelo.databinding.FragmentOrderFirstStageBinding;
 import com.robotechvalley.dhopaelo.databinding.ListItemBinding;
@@ -186,7 +190,12 @@ public class OrderFirstStageFragment extends Fragment implements InvoiceListener
 
             if (!invoiceItemModelMap.isEmpty()) {
                 if(totalPrice != 0.0) {
-                    firstStageListener.goFirstToSecond(invoiceItemModelMap, services.toString());
+                    Intent intent = new Intent(getContext(), OrderActivity.class);
+                    intent.putExtra(FROM_FRAGMENT_NAME, "OrderFirstStageFragment");
+                    intent.putExtra(INVOICE_DATA, new Gson().toJson(invoiceItemModelMap));
+                    intent.putExtra(SERVICE_NAME, services.toString());
+                    startActivity(intent);
+//                    firstStageListener.goFirstToSecond(invoiceItemModelMap, services.toString());
                 } else {
                     Toast.makeText(getContext(), "Please add minimum 1 item", Toast.LENGTH_SHORT).show();
                 }

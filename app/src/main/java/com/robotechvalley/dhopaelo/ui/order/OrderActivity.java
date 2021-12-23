@@ -61,6 +61,16 @@ public class OrderActivity extends AppCompatActivity implements
                 allServiceFragment.setArguments(bundle);
                 gotoFragment(allServiceFragment, false);
                 break;
+            case "OrderFirstStageFragment":
+                OrderSecondStageFragment orderSecondStageFragment = new OrderSecondStageFragment();
+                Bundle bundle2 = new Bundle();
+                bundle2.putString(SERVICE_NAME, getIntent().getStringExtra(SERVICE_NAME));
+                bundle2.putString(FROM_FRAGMENT_NAME, "OrderFirstStageFragment");
+                bundle2.putString(INVOICE_DATA, getIntent().getStringExtra(INVOICE_DATA));
+                bundle2.putString(PENDING_ITEM_KEY, "");
+                orderSecondStageFragment.setArguments(bundle2);
+                gotoFragment(orderSecondStageFragment, false);
+                break;
             case "PendingOrderFragment":
                 OrderSecondStageFragment fragment = new OrderSecondStageFragment();
                 Bundle bundle1 = new Bundle();
