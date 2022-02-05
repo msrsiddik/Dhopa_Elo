@@ -10,15 +10,15 @@ import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.robotechvalley.dhopaelo.R;
+import com.robotechvalley.dhopaelo.databinding.StatusItemBinding;
+import com.robotechvalley.dhopaelo.domain.view.InvoiceItemModel;
+
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-
-import com.robotechvalley.dhopaelo.R;
-import com.robotechvalley.dhopaelo.databinding.StatusItemBinding;
-import com.robotechvalley.dhopaelo.domain.view.InvoiceItemModel;
 
 public class PendingOrderRecyclerView extends RecyclerView.Adapter<PendingOrderRecyclerView.ViewHolder> {
     private final Context context;
@@ -49,11 +49,11 @@ public class PendingOrderRecyclerView extends RecyclerView.Adapter<PendingOrderR
 
         double totalPrice = 0;
         for (Map.Entry<String, InvoiceItemModel> itemModelEntry : invoiceItemModelMap.entrySet()) {
-            totalPrice+=itemModelEntry.getValue().gettPrice();
+            totalPrice += itemModelEntry.getValue().gettPrice();
         }
 
         holder.binding.serviceName.setText(serviceName.get(position));
-        holder.binding.price.setText("💸 "+totalPrice);
+        holder.binding.price.setText("💸 " + totalPrice);
         holder.binding.serviceOrderDate.setText(dateFormat.format(new Date(timestamp.get(position))));
         holder.binding.statusItem.setBackgroundColor(Color.red(5));
     }
@@ -92,6 +92,7 @@ public class PendingOrderRecyclerView extends RecyclerView.Adapter<PendingOrderR
 
     public interface PendingItemClickListener {
         void oneClickListenerItemPosition(int i);
+
         void longClickListenerItemPosition(int l);
     }
 }

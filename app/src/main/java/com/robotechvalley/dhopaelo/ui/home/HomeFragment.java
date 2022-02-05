@@ -1,24 +1,17 @@
 package com.robotechvalley.dhopaelo.ui.home;
 
 import static com.robotechvalley.dhopaelo.ui.order.OrderActivity.SELECT_POSITION;
-import static com.robotechvalley.dhopaelo.ui.order.OrderActivity.SERVICE_NAME;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
-
-import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 import com.denzcoskun.imageslider.ImageSlider;
 import com.google.firebase.auth.FirebaseAuth;
@@ -32,6 +25,10 @@ import com.robotechvalley.dhopaelo.databinding.FragmentHomeBinding;
 import com.robotechvalley.dhopaelo.domain.view.OrderViewItemModel;
 import com.robotechvalley.dhopaelo.ui.ToolBarSetup;
 import com.robotechvalley.dhopaelo.ui.order.OrderActivity;
+
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 public class HomeFragment extends Fragment {
     private FragmentHomeBinding binding;
@@ -88,7 +85,7 @@ public class HomeFragment extends Fragment {
         }));
     }
 
-    private void profileCheck(int position, String serviceType){
+    private void profileCheck(int position, String serviceType) {
         FirebaseFirestore.getInstance().collection("app-user")
                 .document(FirebaseAuth.getInstance().getUid()).collection("profile")
                 .document("address").get().addOnSuccessListener(documentSnapshot -> {
@@ -103,8 +100,7 @@ public class HomeFragment extends Fragment {
                     intent.putExtra("list", new Gson().toJson(tmpList));
                     intent.putExtra(SELECT_POSITION, position);
                     startActivity(intent);
-                }
-                else if (serviceType.equals("dry")) {
+                } else if (serviceType.equals("dry")) {
                     Intent intent = new Intent(getContext(), OrderActivity.class);
                     intent.putExtra(OrderActivity.FROM_FRAGMENT_NAME, "HomeFragment");
 //                    intent.putExtra(SERVICE_NAME, dryList.get(position).getTitle());
@@ -112,7 +108,7 @@ public class HomeFragment extends Fragment {
                     tmpList.addAll(list);
                     tmpList.addAll(dryList);
                     intent.putExtra("list", new Gson().toJson(tmpList));
-                    intent.putExtra(SELECT_POSITION, (position+list.size()));
+                    intent.putExtra(SELECT_POSITION, (position + list.size()));
                     startActivity(intent);
                 }
 

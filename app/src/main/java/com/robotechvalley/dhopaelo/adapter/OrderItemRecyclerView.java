@@ -11,10 +11,10 @@ import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.util.List;
-
 import com.robotechvalley.dhopaelo.R;
 import com.robotechvalley.dhopaelo.domain.view.OrderViewItemModel;
+
+import java.util.List;
 
 public class OrderItemRecyclerView extends RecyclerView.Adapter<OrderItemRecyclerView.ViewHolder> {
     private final List<OrderViewItemModel> list;
@@ -49,6 +49,7 @@ public class OrderItemRecyclerView extends RecyclerView.Adapter<OrderItemRecycle
         private CardView orderItemCardView;
         private ImageView imageView;
         private TextView title;
+
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 
@@ -66,7 +67,7 @@ public class OrderItemRecyclerView extends RecyclerView.Adapter<OrderItemRecycle
         }
     }
 
-    public interface OrderItemClickListener{
+    public interface OrderItemClickListener {
         void onItemClick(int position);
     }
 }

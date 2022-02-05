@@ -12,15 +12,15 @@ import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.robotechvalley.dhopaelo.R;
+import com.robotechvalley.dhopaelo.databinding.StatusItemBinding;
+import com.robotechvalley.dhopaelo.domain.view.InvoiceItemModel;
+
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-
-import com.robotechvalley.dhopaelo.R;
-import com.robotechvalley.dhopaelo.databinding.StatusItemBinding;
-import com.robotechvalley.dhopaelo.domain.view.InvoiceItemModel;
 
 public class StatusItemRecyclerView extends RecyclerView.Adapter<StatusItemRecyclerView.ViewHolder> {
     private final Context context;
@@ -54,10 +54,10 @@ public class StatusItemRecyclerView extends RecyclerView.Adapter<StatusItemRecyc
 
         double totalPrice = 0;
         for (Map.Entry<String, InvoiceItemModel> itemModelEntry : invoiceItemModelMap.entrySet()) {
-            totalPrice+=itemModelEntry.getValue().gettPrice();
+            totalPrice += itemModelEntry.getValue().gettPrice();
         }
 
-        switch (serviceName.get(position).toLowerCase()){
+        switch (serviceName.get(position).toLowerCase()) {
             case "wet wash":
                 holder.binding.imageView.setImageDrawable(context.getDrawable(R.drawable.wash));
                 holder.binding.deliveryDate.setText("Delivery: within 2 days");
@@ -84,13 +84,13 @@ public class StatusItemRecyclerView extends RecyclerView.Adapter<StatusItemRecyc
         }
 
         holder.binding.serviceName.setText(serviceName.get(position));
-        holder.binding.price.setText("💸 "+totalPrice);
+        holder.binding.price.setText("💸 " + totalPrice);
         holder.binding.serviceOrderDate.setText(dateFormat.format(new Date(timestamp.get(position))));
         holder.binding.statusItem.setBackgroundColor(Color.red(5));
 
         int colorFrom = context.getResources().getColor(R.color.color2);
         int colorTo = context.getResources().getColor(R.color.color3);
-        ValueAnimator animator = ValueAnimator.ofArgb( colorFrom, colorTo);
+        ValueAnimator animator = ValueAnimator.ofArgb(colorFrom, colorTo);
         animator.setDuration(1000);
         animator.addUpdateListener(valueAnimator -> {
             holder.binding.statusItem.setBackgroundColor((int) animator.getAnimatedValue());
@@ -107,6 +107,7 @@ public class StatusItemRecyclerView extends RecyclerView.Adapter<StatusItemRecyc
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         StatusItemBinding binding;
+
         public ViewHolder(@NonNull StatusItemBinding binding) {
             super(binding.getRoot());
 
@@ -121,7 +122,7 @@ public class StatusItemRecyclerView extends RecyclerView.Adapter<StatusItemRecyc
         }
     }
 
-    public interface StatusItemClick{
+    public interface StatusItemClick {
         void StatusItemClickListener(int position);
     }
 }

@@ -19,12 +19,11 @@ import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
-
-import java.lang.ref.WeakReference;
-
 import com.robotechvalley.dhopaelo.R;
 import com.robotechvalley.dhopaelo.databinding.ActivityLoginAmanBinding;
 import com.robotechvalley.dhopaelo.ui.DashboardActivity;
+
+import java.lang.ref.WeakReference;
 
 public class LoginActivity extends AppCompatActivity {
     private ActivityLoginAmanBinding binding;
@@ -112,13 +111,14 @@ public class LoginActivity extends AppCompatActivity {
 
     private class OtpCountSyncTask extends AsyncTask<OtpCountView, Integer, Void> {
         private WeakReference<OtpCountView> reference;
+
         @Override
         protected Void doInBackground(OtpCountView... otpCountViews) {
             this.reference = new WeakReference<>(otpCountViews[0]);
             for (int i = 1; i <= 30; i++) {
                 publishProgress(i);
                 try {
-                    Thread.sleep(reference.get().interval*1000);
+                    Thread.sleep(reference.get().interval * 1000);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
@@ -129,7 +129,7 @@ public class LoginActivity extends AppCompatActivity {
         @Override
         protected void onProgressUpdate(Integer... values) {
             super.onProgressUpdate(values);
-            reference.get().sendOtpBtn.setText(values[0]+" s");
+            reference.get().sendOtpBtn.setText(values[0] + " s");
         }
 
         @Override
@@ -140,7 +140,7 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
-    private class OtpCountView{
+    private class OtpCountView {
         private TextView sendOtpBtn;
         private int interval;
 

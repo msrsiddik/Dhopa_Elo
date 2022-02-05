@@ -2,7 +2,6 @@ package com.robotechvalley.dhopaelo.ui.account;
 
 import android.app.ActivityManager;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.InputType;
@@ -26,20 +25,13 @@ import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.robotechvalley.dhopaelo.R;
-import com.robotechvalley.dhopaelo.WelcomeSplash;
 import com.robotechvalley.dhopaelo.databinding.AddressInputBinding;
 import com.robotechvalley.dhopaelo.databinding.FragmentAccountBinding;
 import com.robotechvalley.dhopaelo.domain.UserAddress;
 import com.robotechvalley.dhopaelo.domain.UserInfo;
 import com.robotechvalley.dhopaelo.ui.ToolBarSetup;
-
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 public class AccountFragment extends Fragment {
     private FragmentAccountBinding binding;
@@ -64,7 +56,7 @@ public class AccountFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
 
-        ToolBarSetup.setTitle(getActivity(),"Profile",true);
+        ToolBarSetup.setTitle(getActivity(), "Profile", true);
         setHasOptionsMenu(true);
 
         FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
@@ -127,7 +119,7 @@ public class AccountFragment extends Fragment {
                 String flatNo = addressInputBinding.flatNo.getEditText().getText().toString();
 
                 profileInfoDB.document("address").set(new UserAddress(
-                        areaName,sectorNo,roadNo,houseNo,flatNo
+                        areaName, sectorNo, roadNo, houseNo, flatNo
                 ));
 
                 setProfileInfo();
@@ -138,7 +130,7 @@ public class AccountFragment extends Fragment {
 
     }
 
-    private void setProfileInfo(){
+    private void setProfileInfo() {
         profileInfoDB.document("user-info").get().addOnSuccessListener(documentSnapshot -> {
             if (documentSnapshot.exists()) {
                 UserInfo userInfo = documentSnapshot.toObject(UserInfo.class);
@@ -162,11 +154,11 @@ public class AccountFragment extends Fragment {
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if (item.getItemId() == android.R.id.home){
+        if (item.getItemId() == android.R.id.home) {
             getActivity().onBackPressed();
             return true;
         }
-        if (item.getTitle().equals("Logout")){
+        if (item.getTitle().equals("Logout")) {
             FirebaseAuth.getInstance().signOut();
             ActivityManager systemService = (ActivityManager) getContext().getSystemService(Context.ACTIVITY_SERVICE);
             systemService.clearApplicationUserData();

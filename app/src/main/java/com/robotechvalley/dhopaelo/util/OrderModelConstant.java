@@ -8,5 +8,7 @@ public class OrderModelConstant {
     public static final String PAYMENT_STATUS = "paymentStatus";
     public static final String SERVICE_NAME = "serviceName";
     public static final String DELIVERY_INFO = "deliveryInfo";
+    public static final String DISCOUNT_PRICE = "discountPrice";
+    public static final String SHIPPING_CHARGE = "shippingCharge";
 
 }

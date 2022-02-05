@@ -13,6 +13,8 @@ public class OrderModel {
     private String paymentMethod;
     private String paymentStatus;
     private String serviceName;
+    private Double discountPrice;
+    private Double shippingCharge;
     private DeliveryInfo deliveryInfo;
 
     public OrderModel() {
@@ -78,5 +80,21 @@ public class OrderModel {
 
     public void setDeliveryInfo(DeliveryInfo deliveryInfo) {
         this.deliveryInfo = deliveryInfo;
+    }
+
+    public Double getDiscountPrice() {
+        return discountPrice;
+    }
+
+    public void setDiscountPrice(Double discountPrice) {
+        this.discountPrice = discountPrice;
+    }
+
+    public Double getShippingCharge() {
+        return shippingCharge;
+    }
+
+    public void setShippingCharge(Double shippingCharge) {
+        this.shippingCharge = shippingCharge;
     }
 }

@@ -1,6 +1,11 @@
 package com.robotechvalley.dhopaelo.ui.order;
 
-import static com.robotechvalley.dhopaelo.util.OrderModelConstant.*;
+import static com.robotechvalley.dhopaelo.util.OrderModelConstant.INVOICE_ITEM_MODEL_MAP;
+import static com.robotechvalley.dhopaelo.util.OrderModelConstant.ORDER_STATUS;
+import static com.robotechvalley.dhopaelo.util.OrderModelConstant.PAYMENT_METHOD;
+import static com.robotechvalley.dhopaelo.util.OrderModelConstant.PAYMENT_STATUS;
+import static com.robotechvalley.dhopaelo.util.OrderModelConstant.TIMESTAMP;
+
 import android.app.Dialog;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -10,17 +15,19 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.Toast;
+
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.FieldValue;
-import com.google.firebase.firestore.FirebaseFirestore;
+
 import com.robotechvalley.dhopaelo.R;
 import com.robotechvalley.dhopaelo.databinding.FragmentOrderThirdStageBinding;
 import com.robotechvalley.dhopaelo.domain.OrderModel;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FieldValue;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -34,8 +41,6 @@ public class OrderThirdStageFragment extends Fragment {
     private OrderModel orderModel;
 
     private String order_key;
-
-    Dialog dialog;
 
     public OrderThirdStageFragment() {
         // Required empty public constructor
@@ -67,8 +72,6 @@ public class OrderThirdStageFragment extends Fragment {
 
         Bundle bundle = getArguments();
 
-        dialog = new Dialog(getContext());
-
         if (bundle != null) {
             order_key = bundle.getString("order_key");
 
@@ -89,52 +92,14 @@ public class OrderThirdStageFragment extends Fragment {
             int paymentMethod = binding.paymentGroup.getCheckedRadioButtonId();
 
             if (paymentMethod == binding.onlinePay.getId() && order_key != null) {
-//                Toast.makeText(getContext(), "coming soon...", Toast.LENGTH_SHORT).show();
 
+                Dialog dialog;
+                dialog = new Dialog(getContext());
                 dialog.setContentView(R.layout.coming_soon);
                 dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
                 ImageView imageView = dialog.findViewById(R.id.imageView);
                 dialog.show();
-
-//                AlertDialog.Builder dialog = new AlertDialog.Builder(getContext());
-//                dialog.setTitle("Coming Soon");
-//                //dialog.setMessage("Our Online Payment Service is Coming Soon");
-//                dialog.setIcon(R.drawable.coming_soon_1);
-//
-//                dialog.setPositiveButton("Ok", (dialog1, which) -> {
-//                    getActivity().finish();
-//                }).show();
-
-//                if (orderModel != null) {
-//
-//                    SSLCommerzInitialization sslCommerzInitialization = new SSLCommerzInitialization(
-//                            getResources().getString(R.string.store_id), getResources().getString(R.string.store_password),
-//                            totalAmount, SSLCCurrencyType.BDT, order_key,
-//                            "laundry", SSLCSdkType.TESTBOX
-//                    );
-//
-//                    IntegrateSSLCommerz.getInstance(getContext())
-//                            .addSSLCommerzInitialization(sslCommerzInitialization)
-//                            .buildApiCall(new SSLCTransactionResponseListener() {
-//                                @Override
-//                                public void transactionSuccess(SSLCTransactionInfoModel sslcTransactionInfoModel) {
-//                                    confirmOrder("Paid", "SSL");
-//                                    getActivity().finish();
-//                                }
-//
-//                                @Override
-//                                public void transactionFail(String s) {
-//
-//                                }
-//
-//                                @Override
-//                                public void merchantValidationError(String s) {
-//
-//                                }
-//                            });
-//
-//                }
 
             } else if (paymentMethod == binding.cashPay.getId()) {
 
@@ -161,7 +126,10 @@ public class OrderThirdStageFragment extends Fragment {
                 .document(order_key)
                 .update(map).addOnSuccessListener(command -> {
             Toast.makeText(getContext(), "Successfully order complete", Toast.LENGTH_SHORT).show();
-            getActivity().finish();
+            for (OrderActivity activity : OrderActivity.oa) {
+                activity.finish();
+            }
         });
     }
+
 }

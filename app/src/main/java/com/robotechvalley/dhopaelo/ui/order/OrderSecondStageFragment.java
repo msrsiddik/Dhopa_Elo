@@ -22,12 +22,6 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.FieldValue;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import com.robotechvalley.dhopaelo.R;
 import com.robotechvalley.dhopaelo.databinding.AddressEditBinding;
 import com.robotechvalley.dhopaelo.databinding.FragmentOrderSecondStageBinding;
@@ -38,6 +32,12 @@ import com.robotechvalley.dhopaelo.domain.UserInfo;
 import com.robotechvalley.dhopaelo.domain.view.InvoiceItemModel;
 import com.robotechvalley.dhopaelo.ui.ToolBarSetup;
 import com.robotechvalley.dhopaelo.util.OrderModelConstant;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.FieldValue;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
 import java.util.Collections;
@@ -55,6 +55,9 @@ public class OrderSecondStageFragment extends Fragment {
     private Map<String, InvoiceItemModel> invoiceItemModelMap;
     private UserAddress userAddress;
     private UserInfo userInfo;
+
+    private double discount = 0;
+    private double shipping = 0;
 
     public OrderSecondStageFragment() {
         // Required empty public constructor
@@ -95,13 +98,21 @@ public class OrderSecondStageFragment extends Fragment {
             invoiceItemModelMap = new Gson().fromJson(invoiceData, type);
 
             double totalPrice = 0;
+
             for (InvoiceItemModel value : invoiceItemModelMap.values()) {
                 addItemInInvoice(binding.invoice.itemContainer, value);
                 totalPrice += value.gettPrice();
             }
 
+            if(totalPrice >= 500 && OrderActivity.isOfferEligible){
+                discount = 100;
+            }
+
             binding.invoice.totalPrice.setText(String.format("Tk %.2f", totalPrice));
-            binding.totalPrice.setText(String.format("Total Price : ৳ %.2f", (totalPrice)));
+            binding.invoice.shippingFee.setText(String.format("Tk %.2f", shipping));
+            binding.invoice.discount.setText(String.format("- Tk %.2f", discount));
+
+            binding.totalPrice.setText(String.format("Total Price : ৳ %.2f", (totalPrice-discount)));
 
             backPressHandle(fromFragment);
 
@@ -176,6 +187,8 @@ public class OrderSecondStageFragment extends Fragment {
         map.put(OrderModelConstant.INVOICE_ITEM_MODEL_MAP, invoiceItemModelMap);
         map.put(OrderModelConstant.TIMESTAMP, FieldValue.serverTimestamp());
         map.put(OrderModelConstant.ORDER_STATUS, "pending");
+        map.put(OrderModelConstant.DISCOUNT_PRICE, discount);
+        map.put(OrderModelConstant.SHIPPING_CHARGE, shipping);
         map.put(OrderModelConstant.SERVICE_NAME, serviceName);
         map.put(OrderModelConstant.DELIVERY_INFO, new DeliveryInfo(userInfo, userAddress));
 
@@ -213,21 +226,21 @@ public class OrderSecondStageFragment extends Fragment {
         getActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), new OnBackPressedCallback(true) {
             @Override
             public void handleOnBackPressed() {
-                if (fragmentName == "OrderFirstStageFragment") {
-                    AlertDialog.Builder dialog = new AlertDialog.Builder(getContext());
-                    dialog.setTitle("Save");
-                    dialog.setMessage("Do you want to save your invoice?");
-
-                    dialog.setPositiveButton("Yes", (dialog1, which) -> {
-                        Toast.makeText(getContext(), "Your order is saved in pending order", Toast.LENGTH_LONG).show();
-                        pendingOrderPlace(null);
-                    }).setNegativeButton("No", (dialog1, which) -> {
-                        Toast.makeText(getContext(), "Your order is canceled", Toast.LENGTH_LONG).show();
-                        getActivity().finish();
-                    }).show();
-                } else if (fragmentName.equals("PendingOrderFragment")){
+//                if (fragmentName == "OrderFirstStageFragment") {
+//                    AlertDialog.Builder dialog = new AlertDialog.Builder(getContext());
+//                    dialog.setTitle("Save");
+//                    dialog.setMessage("Do you want to save your invoice?");
+//
+//                    dialog.setPositiveButton("Yes", (dialog1, which) -> {
+//                        Toast.makeText(getContext(), "Your order is saved in pending order", Toast.LENGTH_LONG).show();
+//                        pendingOrderPlace(null);
+//                    }).setNegativeButton("No", (dialog1, which) -> {
+//                        Toast.makeText(getContext(), "Your order is canceled", Toast.LENGTH_LONG).show();
+//                        getActivity().finish();
+//                    }).show();
+//                } else if (fragmentName.equals("PendingOrderFragment")){
                     getActivity().finish();
-                }
+//                }
 
             }
         });
@@ -241,6 +254,5 @@ public class OrderSecondStageFragment extends Fragment {
 
     public interface SecondStageListener {
         void goSecondToThird(String orderKey);
-        void goSecondToEditAddress();
     }
 }

@@ -12,12 +12,6 @@ import static com.robotechvalley.dhopaelo.util.ServicePriceConstant.WASH_PRICE;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.databinding.DataBindingUtil;
-import androidx.fragment.app.Fragment;
-
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -25,26 +19,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
-import com.google.android.material.textfield.TextInputEditText;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.databinding.DataBindingUtil;
+import androidx.fragment.app.Fragment;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.UUID;
-
-import com.google.gson.Gson;
 import com.robotechvalley.dhopaelo.R;
 import com.robotechvalley.dhopaelo.databinding.FragmentOrderFirstStageBinding;
 import com.robotechvalley.dhopaelo.databinding.ListItemBinding;
@@ -56,6 +38,17 @@ import com.robotechvalley.dhopaelo.listener.InvoiceListener;
 import com.robotechvalley.dhopaelo.text.drawable.ColorGenerator;
 import com.robotechvalley.dhopaelo.text.drawable.TextDrawable;
 import com.robotechvalley.dhopaelo.ui.ToolBarSetup;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.gson.Gson;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.UUID;
 
 public class OrderFirstStageFragment extends Fragment implements InvoiceListener {
     private FragmentOrderFirstStageBinding binding;
@@ -134,7 +127,6 @@ public class OrderFirstStageFragment extends Fragment implements InvoiceListener
                     }
                     if (productInfoModel != null) {
                         productInfoModels.add(productInfoModel);
-//                        oneInvoiceModel.addProductInfoModel(productInfoModel);
                     }
                 }
             }
@@ -150,7 +142,6 @@ public class OrderFirstStageFragment extends Fragment implements InvoiceListener
         binding.totalAmount.getEditText().setText("00.00");
 
         binding.confirmBtn.setOnClickListener(v -> {
-            FirstStageListener firstStageListener = (FirstStageListener) getActivity();
 
             Map<String, InvoiceItemModel> invoiceItemModelMap = new HashMap<>();
 
@@ -162,32 +153,6 @@ public class OrderFirstStageFragment extends Fragment implements InvoiceListener
                 i++;
             }
 
-//            for (int i = 1; i < binding.ItemContainer.getChildCount(); i++) {
-//                AutoCompleteTextView itemName = binding.ItemContainer.getChildAt(i).findViewById(R.id.productList);
-//                TextInputEditText quantity = binding.ItemContainer.getChildAt(i).findViewById(R.id.quantity);
-//
-//                for (ProductInfoModel infoModel : productInfoModels) {
-//                    if (infoModel.getName().equals(itemName.getText().toString())) {
-//                        if (quantity.getText().toString() != null && !quantity.getText().toString().isEmpty()) {
-//                            int itemQty = Integer.parseInt(quantity.getText().toString());
-//                            double unitPrice = infoModel.getPrice();
-//
-//                            invoiceItemModelMap.put(i + "",
-//                                    new InvoiceItemModel(
-//                                            itemName.getText().toString(),
-//                                            itemQty,
-//                                            unitPrice,
-//                                            itemQty * unitPrice,
-//                                            serviceName));
-//                        } else {
-//                            Toast.makeText(getContext(), "insert quantity", Toast.LENGTH_SHORT).show();
-//                            return;
-//                        }
-//
-//                    }
-//                }
-//            }
-
             if (!invoiceItemModelMap.isEmpty()) {
                 if(totalPrice != 0.0) {
                     Intent intent = new Intent(getContext(), OrderActivity.class);
@@ -195,7 +160,6 @@ public class OrderFirstStageFragment extends Fragment implements InvoiceListener
                     intent.putExtra(INVOICE_DATA, new Gson().toJson(invoiceItemModelMap));
                     intent.putExtra(SERVICE_NAME, services.toString());
                     startActivity(intent);
-//                    firstStageListener.goFirstToSecond(invoiceItemModelMap, services.toString());
                 } else {
                     Toast.makeText(getContext(), "Please add minimum 1 item", Toast.LENGTH_SHORT).show();
                 }
@@ -227,19 +191,10 @@ public class OrderFirstStageFragment extends Fragment implements InvoiceListener
                 oneInvoiceModel.setTotalProduct(oneInvoiceModel.getTotalProduct()-i);
                 oneInvoiceModel.setTotalPrice(oneInvoiceModel.getTotalPrice() - (i * product[0].getPrice()));
                 oneInvoiceModel.getInvoiceItemModels().remove(key);
-//                binding.totalQuantity.getEditText().setText(totalProduct + "");
-//                binding.totalQuantity.getEditText().setText(oneInvoiceModel.getTotalProduct() + "");
-//                binding.totalAmount.getEditText().setText(totalPrice + "");
-//                binding.totalAmount.getEditText().setText(oneInvoiceModel.getTotalPrice() + "");
             }
             itemContainer.removeView(itemBinding.getRoot());
             --counter;
         });
-
-//        List<String> list = new ArrayList<>();
-//        for (ProductInfoModel infoModel : productInfoModels) {
-//            list.add(infoModel.getName());
-//        }
 
         ProductListAdapter listAdapter = new ProductListAdapter(getContext(), R.layout.list_item, productInfoModels);
         itemBinding.productList.setAdapter(listAdapter);
@@ -258,10 +213,6 @@ public class OrderFirstStageFragment extends Fragment implements InvoiceListener
                     itemModel.setUnitPrice(itemModel.getUnitPrice() - product[0].getPrice());
                     itemModel.settPrice(itemModel.gettPrice() - (i * product[0].getPrice()));
 
-//                    binding.totalQuantity.getEditText().setText(totalProduct + "");
-//                    binding.totalAmount.getEditText().setText(totalPrice + "");
-//                    binding.totalQuantity.getEditText().setText(oneInvoiceModel.getTotalProduct() + "");
-//                    binding.totalAmount.getEditText().setText(oneInvoiceModel.getTotalPrice() + "");
                 }
             }
 
@@ -279,15 +230,10 @@ public class OrderFirstStageFragment extends Fragment implements InvoiceListener
                     oneInvoiceModel.setTotalProduct(oneInvoiceModel.getTotalProduct() + i);
                     oneInvoiceModel.setTotalPrice(oneInvoiceModel.getTotalPrice() + (i * product[0].getPrice()));
 
-
                     itemModel.setItemQuantity(itemModel.getItemQuantity() + i);
                     itemModel.setUnitPrice(itemModel.getUnitPrice() + product[0].getPrice());
                     itemModel.settPrice(itemModel.gettPrice() + (i * product[0].getPrice()));
 
-//                    binding.totalQuantity.getEditText().setText(totalProduct + "");
-//                    binding.totalAmount.getEditText().setText(totalPrice + "");
-//                    binding.totalQuantity.getEditText().setText(oneInvoiceModel.getTotalProduct() + "");
-//                    binding.totalAmount.getEditText().setText(oneInvoiceModel.getTotalPrice() + "");
                 }
             }
         });
@@ -335,9 +281,5 @@ public class OrderFirstStageFragment extends Fragment implements InvoiceListener
             binding.textView.setText(productInfoModel.getName());
             return binding.getRoot();
         }
-    }
-
-    public interface FirstStageListener {
-        void goFirstToSecond(Map<String, InvoiceItemModel> invoiceItemModelMap, String serviceName);
     }
 }

@@ -1,31 +1,28 @@
 package com.robotechvalley.dhopaelo.ui.order;
 
+import android.os.Bundle;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
-import android.os.Bundle;
-import android.widget.Toast;
-
-import com.google.gson.Gson;
-
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Type;
-import java.util.List;
-import java.util.Map;
-
-import com.google.gson.reflect.TypeToken;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 import com.robotechvalley.dhopaelo.R;
-import com.robotechvalley.dhopaelo.adapter.order.AllService;
 import com.robotechvalley.dhopaelo.databinding.ActivityOrderBinding;
 import com.robotechvalley.dhopaelo.domain.AllServiceOneInvoiceModel;
-import com.robotechvalley.dhopaelo.domain.view.InvoiceItemModel;
-import com.robotechvalley.dhopaelo.domain.view.OrderViewItemModel;
+import com.robotechvalley.dhopaelo.domain.OrderModel;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class OrderActivity extends AppCompatActivity implements
-        OrderFirstStageFragment.FirstStageListener,
-        OrderSecondStageFragment.SecondStageListener {
+        OrderSecondStageFragment.SecondStageListener{
+
+    public static final List<OrderActivity> oa = new ArrayList<>();
 
     private ActivityOrderBinding binding;
 
@@ -37,11 +34,13 @@ public class OrderActivity extends AppCompatActivity implements
     public static final String PENDING_ITEM_KEY = "pendingItemKey";
     public static final String DELIVERY_INFO = "deliveryInfo";
 
+    public static boolean isOfferEligible = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_order);
-
+        oa.add(this);
         setSupportActionBar(binding.toolbar.toolbar);
 
         String fromFragName = getIntent().getStringExtra(FROM_FRAGMENT_NAME);
@@ -49,13 +48,10 @@ public class OrderActivity extends AppCompatActivity implements
 
         switch (fromFragName){
             case "HomeFragment":
-//                OrderFirstStageFragment orderFirstStageFragment = new OrderFirstStageFragment();
+                offerEligible();
+                AllServiceFragment allServiceFragment = new AllServiceFragment();
                 Bundle bundle = new Bundle();
                 bundle.putString(SERVICE_NAME, getIntent().getStringExtra(SERVICE_NAME));
-//                orderFirstStageFragment.setArguments(bundle);
-//                gotoFragment(orderFirstStageFragment, false);
-
-                AllServiceFragment allServiceFragment = new AllServiceFragment();
                 bundle.putString("list", getIntent().getStringExtra("list"));
                 bundle.putInt(SELECT_POSITION, getIntent().getIntExtra(SELECT_POSITION, 0));
                 allServiceFragment.setArguments(bundle);
@@ -72,9 +68,11 @@ public class OrderActivity extends AppCompatActivity implements
                 gotoFragment(orderSecondStageFragment, false);
                 break;
             case "PendingOrderFragment":
+                offerEligible();
                 OrderSecondStageFragment fragment = new OrderSecondStageFragment();
                 Bundle bundle1 = new Bundle();
                 bundle1.putString(INVOICE_DATA, invoice_data);
+                bundle1.putString(SERVICE_NAME, getIntent().getStringExtra(SERVICE_NAME));
                 bundle1.putString(FROM_FRAGMENT_NAME, "PendingOrderFragment");
                 bundle1.putString(PENDING_ITEM_KEY, getIntent().getStringExtra(PENDING_ITEM_KEY));
                 bundle1.putString(DELIVERY_INFO, getIntent().getStringExtra(DELIVERY_INFO));
@@ -85,6 +83,35 @@ public class OrderActivity extends AppCompatActivity implements
                 throw new IllegalStateException("Unexpected value: " + fromFragName);
         }
 
+    }
+
+    private void offerEligible(){
+        new Thread(() -> {
+            FirebaseFirestore.getInstance()
+                    .collection("app-user")
+                    .document(FirebaseAuth.getInstance().getUid())
+                    .collection("order")
+                    .orderBy("timestamp", Query.Direction.DESCENDING)
+                    .get().addOnSuccessListener(queryDocumentSnapshots -> {
+                List<DocumentSnapshot> documents = queryDocumentSnapshots.getDocuments();
+
+                final List<OrderModel> orderModels = new ArrayList<>();
+
+                for (DocumentSnapshot document : documents) {
+                    OrderModel orderModel = document.toObject(OrderModel.class);
+                    if (orderModel.getOrderStatus().equals("Confirm")) {
+                        orderModels.add(orderModel);
+                    }
+                }
+
+                isOfferEligible = false;
+
+                if (orderModels.isEmpty()){
+                    isOfferEligible = true;
+                }
+
+            });
+        }).start();
     }
 
     private void gotoFragment(Fragment fragment, boolean addBackStack) {
@@ -98,28 +125,12 @@ public class OrderActivity extends AppCompatActivity implements
     }
 
     @Override
-    public void goFirstToSecond(Map<String, InvoiceItemModel> invoiceItemModelMap, String serviceName) {
-        OrderSecondStageFragment orderSecondStageFragment = new OrderSecondStageFragment();
-        Bundle bundle = new Bundle();
-        bundle.putString(SERVICE_NAME, serviceName);
-        bundle.putString(FROM_FRAGMENT_NAME, "OrderFirstStageFragment");
-        bundle.putString(INVOICE_DATA, new Gson().toJson(invoiceItemModelMap));
-        bundle.putString(PENDING_ITEM_KEY, "");
-        orderSecondStageFragment.setArguments(bundle);
-        gotoFragment(orderSecondStageFragment, true);
-    }
-
-    @Override
     public void goSecondToThird(String orderKey) {
         OrderThirdStageFragment orderThirdStageFragment = new OrderThirdStageFragment();
         Bundle bundle = new Bundle();
         bundle.putString("order_key", orderKey);
         orderThirdStageFragment.setArguments(bundle);
         gotoFragment(orderThirdStageFragment, true);
-    }
-
-    @Override
-    public void goSecondToEditAddress() {
     }
 
     @Override

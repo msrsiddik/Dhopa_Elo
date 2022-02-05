@@ -32,10 +32,10 @@ public class StatusTimelineRecyclerView extends RecyclerView.Adapter<StatusTimel
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        if (position == 0){
+        if (position == 0) {
             holder.binding.topDivider.setBackgroundResource(R.color.color5);
         }
-        if (position == list.size()-1) {
+        if (position == list.size() - 1) {
             holder.binding.bottomDivider.setBackgroundResource(R.color.color5);
         }
         StatusTimelineDetailsModel detailsModel = list.get(position);
@@ -94,6 +94,7 @@ public class StatusTimelineRecyclerView extends RecyclerView.Adapter<StatusTimel
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         private TrackingTimelineItemBinding binding;
+
         public ViewHolder(@NonNull TrackingTimelineItemBinding binding) {
             super(binding.getRoot());
             this.binding = binding;

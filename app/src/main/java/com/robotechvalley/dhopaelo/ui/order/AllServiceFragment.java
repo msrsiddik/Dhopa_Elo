@@ -1,18 +1,16 @@
 package com.robotechvalley.dhopaelo.ui.order;
 
 import static com.robotechvalley.dhopaelo.ui.order.OrderActivity.SELECT_POSITION;
-import static com.robotechvalley.dhopaelo.ui.order.OrderActivity.SERVICE_NAME;
 
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
-
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
@@ -22,13 +20,11 @@ import com.robotechvalley.dhopaelo.R;
 import com.robotechvalley.dhopaelo.adapter.order.AllService;
 import com.robotechvalley.dhopaelo.databinding.FragmentAllServiceBinding;
 import com.robotechvalley.dhopaelo.domain.AllServiceOneInvoiceModel;
-import com.robotechvalley.dhopaelo.domain.ProductInfoModel;
 import com.robotechvalley.dhopaelo.domain.view.OrderViewItemModel;
 import com.robotechvalley.dhopaelo.listener.InvoiceListener;
 import com.robotechvalley.dhopaelo.ui.ToolBarSetup;
 
 import java.lang.reflect.Type;
-import java.util.ArrayList;
 import java.util.List;
 
 public class AllServiceFragment extends Fragment implements InvoiceListener {
